@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Munstrocity</title>
+  <style>
+  body {
+    font-family: arial;
+    color: white;
+  }
+  h1 {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    margin-top: -80px;
+    text-align: center;
+    font-family: arial;
+    font-size: 50px;
+    font-weight: 300;
+    z-index: 1000;
+    opacity: .9;
+  }
+  .cat {
+    position: fixed;
+    top: -25%;
+    left: -25%;
+    width: 150%;
+    height: 150%;
+    background: url(http://i.imgur.com/7PtWSwC.jpg);
+    background-size: cover;
+    -webkit-animation:spin 4s linear infinite;
+    -moz-animation:spin 4s linear infinite;
+    animation:spin 4s linear infinite;
+  }
+  .cat2 {
+    position: fixed;
+    top: -25%;
+    left: -25%;
+    width: 150%;
+    height: 150%;
+    opacity: .7;
+    background: url(http://i.imgur.com/7PtWSwC.jpg);
+    background-size: cover;
+    -webkit-animation:spin2 4s linear infinite;
+    -moz-animation:spin2 4s linear infinite;
+    animation:spin2 4s linear infinite;
+  }
+  .ball {
+    opacity: .3;
+    position: fixed;
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+  @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+  @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+  @-moz-keyframes spin2 { 100% { -moz-transform: rotate(-360deg); } }
+  @-webkit-keyframes spin2 { 100% { -webkit-transform: rotate(-360deg); } }
+  @keyframes spin2 { 100% { -webkit-transform: rotate(-360deg); transform:rotate(-360deg); } }
+
+  </style>
+</head>
+<body>
+<h1>Enhance.</h1>
+<div class="cat"></div>
+<div class="cat2"></div>
+<iframe style="position: fixed;opacity:1;z-index:0;height:150px;left:0;bottom:0;width:100%" width="420" height="315" src="https://www.youtube.com/embed/maHwTsfXUM0?autoplay=1" frameborder="0" allowfullscreen></iframe>
+<script>
+
+(function() {
+
+  var fps = 1000/30;
+  var sprites = [];
+
+  var Animations = {
+    bounce: function(sprite) {
+      console.log(sprite);
+    }
+  };
+
+  function Ball() {
+    var sprite = new Sprite();
+    sprite.run = run;
+    sprite.height = Math.floor(Math.random() * 10) + 10;
+    sprite.width = Math.floor(Math.random() * 1000) + 500;
+    sprite.x = -1000;
+    sprite.y = 0;
+    sprite.degree = Math.random() * 360;
+    sprite.xSpeed = Math.floor(Math.random() * 500)+10;
+    sprite.ySpeed = Math.floor(Math.random() * 1000)+10;
+    sprite.instance = createInstance();
+
+    // Interface
+    return sprite;
+
+    // Routines
+    function run() {
+      sprite.degree += 0.1;
+      sprite.x = Math.tan(sprite.degree) * sprite.xSpeed;
+      sprite.y = Math.cos(sprite.degree) * sprite.ySpeed;
+      return;
+      if (sprite.x + sprite.xSpeed + sprite.width > Playfield().width || sprite.x + sprite.xSpeed < 0) {
+        sprite.xSpeed = -sprite.xSpeed;
+      }
+      if (sprite.y + sprite.ySpeed > Playfield().height-sprite.height || sprite.y + sprite.ySpeed < 0) {
+        sprite.ySpeed = -sprite.ySpeed;
+      }
+      sprite.x+=sprite.xSpeed;
+      sprite.y+=sprite.ySpeed;
+    }
+
+    function createInstance() {
+      var ball = document.createElement("div");
+      ball.className = "ball";
+      ball.style.background = sprite.color;
+      ball.style.width = sprite.width.toString() + "px";
+      ball.style.height = sprite.height.toString() + "px";
+      document.body.appendChild(ball);
+      return ball;
+    }
+
+  }
+
+  function Sprite() {
+    return {
+      x: 0,
+      y: 0,
+      color: "green",
+      height: 0,
+      width: 0,
+      degree: 0,
+      xSpeed: 1,
+      ySpeed: 1,
+      instance: null,
+      run: null,
+      updatePosition: updatePosition
+    }
+
+    function updatePosition() {
+      this.instance.style.left = this.x.toString() + "px";
+      this.instance.style.top = this.y.toString() + "px";
+    }
+  }
+
+  function Playfield() {
+    return {
+      width: document.body.scrollWidth,
+      height: document.body.scrollHeight
+    }
+  }
+
+  function loop() {
+    var sprite;
+    var spriteIndex;
+    for (spriteIndex in sprites) {
+      sprite = sprites[spriteIndex];
+      sprite.run();
+      sprite.updatePosition();
+    }
+  }
+
+  for (x=0;x<100;x++) {
+    //sprites.push(new Ball);
+  }
+  //setInterval(loop, fps);
+
+})();
+
+</script>
+</body>
+</html>
