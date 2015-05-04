@@ -6,6 +6,7 @@
   <style>
   body {
     font-family: arial;
+    background: black;
     color: white;
   }
   h1 {
@@ -65,16 +66,19 @@
   </style>
 </head>
 <body>
+<!--
 <h1>Enhance.</h1>
 <div class="cat"></div>
 <div class="cat2"></div>
 <iframe style="position: fixed;opacity:1;z-index:0;height:150px;left:0;bottom:0;width:100%" width="420" height="315" src="https://www.youtube.com/embed/maHwTsfXUM0?autoplay=1" frameborder="0" allowfullscreen></iframe>
+-->
 <script>
 
 (function() {
 
-  var fps = 1000/30;
+  var fps = 1000/60;
   var sprites = [];
+  var newRadius = 10;
 
   var Animations = {
     bounce: function(sprite) {
@@ -84,12 +88,14 @@
 
   function Ball() {
     var sprite = new Sprite();
+    newRadius+=.3;
     sprite.run = run;
-    sprite.height = Math.floor(Math.random() * 10) + 10;
-    sprite.width = Math.floor(Math.random() * 1000) + 500;
-    sprite.x = -1000;
+    sprite.height = 50; //Math.floor(Math.random() * 10) + 10;
+    sprite.width = 3; //Math.floor(Math.random() * 1000) + 500;
+    sprite.x = 0;
     sprite.y = 0;
-    sprite.degree = Math.random() * 360;
+    sprite.degree = newRadius; //Math.random() * 360;
+    sprite.radius = newRadius;
     sprite.xSpeed = Math.floor(Math.random() * 500)+10;
     sprite.ySpeed = Math.floor(Math.random() * 1000)+10;
     sprite.instance = createInstance();
@@ -99,9 +105,9 @@
 
     // Routines
     function run() {
-      sprite.degree += 0.1;
-      sprite.x = Math.tan(sprite.degree) * sprite.xSpeed;
-      sprite.y = Math.cos(sprite.degree) * sprite.ySpeed;
+      sprite.degree += 0.01;
+      sprite.x = Math.cos(sprite.degree) * sprite.radius + (Playfield().width/2);
+      sprite.y = Math.tan(sprite.degree) * sprite.radius + (Playfield().height/2) - 50;
       return;
       if (sprite.x + sprite.xSpeed + sprite.width > Playfield().width || sprite.x + sprite.xSpeed < 0) {
         sprite.xSpeed = -sprite.xSpeed;
@@ -129,7 +135,7 @@
     return {
       x: 0,
       y: 0,
-      color: "green",
+      color: "red",
       height: 0,
       width: 0,
       degree: 0,
@@ -164,9 +170,9 @@
   }
 
   for (x=0;x<100;x++) {
-    //sprites.push(new Ball);
+    sprites.push(new Ball);
   }
-  //setInterval(loop, fps);
+  setInterval(loop, fps);
 
 })();
 
