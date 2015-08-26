@@ -75,6 +75,18 @@
 <script>
 
 (function() {
+  
+  
+  Notification.requestPermission(start);
+  function start() {
+    if (Notification.permission === "granted") {
+      setTimeout(function() {
+        new Notification({
+          title: "I am a notification"
+        });
+      }, 4000);
+    }
+  }
 
   var fps = 1000/60;
   var sprites = [];
