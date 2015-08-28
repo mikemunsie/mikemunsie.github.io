@@ -79,10 +79,7 @@
 
   Notification.requestPermission(start);
   function start() {
-    new Notification({
-      title: "I am a notification",
-      body: "Hello world!"
-    });
+    new Notification("Something is ready");
     setTimeout(start, Math.floor(Math.random() * 10000)) + 3000;
   }
 
